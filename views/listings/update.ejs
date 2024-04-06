@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create new data</title>
+</head>
+
+<body>
+    <h2>Update Data</h2>
+    <ul>
+        <form method="post" action="/listings/addUpdate/<%= list.id %>?_method=PUT" >
+            <li>Title: <input type="text" name="listing[title]" value="<%= list.title %>"></li>
+            <li>Description: <input type="text" name="listing[description]" style="width: 400px"
+                    value="<%=list.description %>"></input></li>
+            <li>Image URL: <input type="text" name="listing[image.url]" style="width: 400px"
+                    value="<%= list.image.url %>"></li>
+            <li>Price: &#8377;<input type="number" min="0" name="listing[price]" placeholder="In Rupice"
+                    value="<%= list.price %>"></li>
+            <li>Location: <input type="text" name="listing[location]" value="<%= list.location %>"></li>
+            <li>Country: <input type="text" name="listing[country]" value="<%= list.country %>"></li>
+            <button>Update</button>
+        </form>
+    </ul>
+</body>
+
+</html>

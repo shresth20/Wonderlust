@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create new data</title>
+</head>
+<body>
+    <h2>Add New Data</h2>
+    <ul>
+    <form action="/listings/addNew " method="post">
+        <li>Title: <input type="text" name="listing[title]" placeholder=""></li>
+        <li>Description: <textarea type="text" name="listing[description]" style="width: 360px; height: 50px;" placeholder=""></textarea></li> 
+        <li>Image URL: <input type="text" name="listing[image.url]"  placeholder=""></li> 
+        <li>Price: &#8377;<input type="number" min="0" name="listing[price]" placeholder="In Rupice"></li> 
+        <li>Location: <input type="text" name="listing[location]" placeholder=""></li> 
+        <li>Country: <input type="text" name="listing[country]" placeholder=""></li> 
+        <button>Add</button>
+    </form>
+</ul>
+</body>
+</html>

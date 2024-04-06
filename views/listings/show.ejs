@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+</head>
+
+<body>
+    <h3>
+        <%= list.title %>
+    </h3>
+    <ul>
+        <li>Description: <%= list.description %></li>
+        <li>Image: <img style="width: 200px; height: 200px;" src="<%= list.image.url %>" alt=""></li>
+        <li>&#8377; <%= list.price.toLocaleString("en-IN") %></li>
+        <li>Place: <%= list.location %>, <%= list.country %></li>
+    </ul>
+    <span><form action="/listings" method="get"><button>Back</button></form></span>
+    <span><form action="/listings/<%= list.id %>/update" method="get"><button>Update</button></form></span>
+    <span><form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button>Delete</button></form></span>
+
+</body>
+
+</html>
