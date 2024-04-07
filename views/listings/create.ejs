@@ -1,3 +1,5 @@
+<% layout('/layouts/boilerplate') -%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
 <body>
     <h2>Add New Data</h2>
     <ul>
-    <form action="/listings/addNew " method="post">
+    <form action="/listings/addNew" method="post">
         <li>Title: <input type="text" name="listing[title]" placeholder=""></li>
         <li>Description: <textarea type="text" name="listing[description]" style="width: 360px; height: 50px;" placeholder=""></textarea></li> 
         <li>Image URL: <input type="text" name="listing[image.url]"  placeholder=""></li> 

@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin_WANDERLUST</title>
-</head>
+<% layout('/layouts/boilerplate') -%>
+<!-- <title></title> -->
 <body>
     <h3>All Listings</h3>
-    <form action="/listings/new" method="get"><button>CreateNew</button></form>
+    <!-- <form action="/listings/new" method="get"><button>CreateNew</button></form> -->
     <ul>
         <% for( let list of lists ) { %>
         <li><a href="listings/<%= list.id %>"><%= list.title %></a></li>
         <% } %>
     </ul>
 </body>
-</html>

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const Listing = require("./models/listing.js");
+const ejsMate = require("ejs-mate");
 
 main = async () => {
   await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
@@ -16,6 +17,7 @@ main()
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -50,14 +52,13 @@ app.post("/listings/addNew", async (req, res) => {
 app.get("/listings/:id/update", async (req, res) => {
   let { id } = req.params;
   let list = await Listing.findById(id);
-  res.render("listings/update.ejs", {list});
+  res.render("listings/update.ejs", { list });
 });
 
 // update data in db
 app.put("/listings/addUpdate/:id", async (req, res) => {
   let { id } = req.params;
-    await Listing
-    .findByIdAndUpdate(id, {...req.body.listing})
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing })
     .then((res) => console.log(res))
     .catch((err) => console.log(err));
   res.redirect(`/listings/${id}`);
@@ -74,7 +75,7 @@ app.delete("/listings/delete/:id", async (req, res) => {
 app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
   const list = await Listing.findById(id);
-  res.render("listings/show.ejs", {list});
+  res.render("listings/show.ejs", { list });
 });
 
 // test data listing
