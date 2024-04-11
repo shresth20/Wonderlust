@@ -1,11 +1,22 @@
 <% layout('/layouts/boilerplate') -%>
-<!-- <title></title> -->
-<body>
-    <h3>All Listings</h3>
-    <!-- <form action="/listings/new" method="get"><button>CreateNew</button></form> -->
-    <ul>
-        <% for( let list of lists ) { %>
-        <li><a href="listings/<%= list.id %>"><%= list.title %></a></li>
-        <% } %>
-    </ul>
-</body>
+    <!-- <title></title> -->
+
+    <body>
+        <h2 class="">All Listings</h2>
+        <div id="allcards" class="cards row-col-lg-6">
+            <% for( let list of lists ) { %>
+                <a href="/listings/<%= list.id %>">
+                    <div class="card rounded-3 m-3 " style="width: 18rem; height: 18rem;">
+                        <img style="height: 12rem;" src="<%= list.image.url %>" class="card-img-top rounded-2"
+                            alt="...">
+                        <div class="card-body">
+                            <b class="card-text">
+                                <%= list.title %>
+                            </b>
+                            <p class="card-text">&#8377; <%= list.price.toLocaleString("en-IN") %>/ night</p>
+                        </div>
+                    </div>
+                </a>
+                <% } %>
+        </div>
+    </body>

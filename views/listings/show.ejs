@@ -1,28 +1,50 @@
 <% layout('/layouts/boilerplate') -%>
 
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wanderlust</title>
+    </head>
 
-<body>
-    <h3>
-        <%= list.title %>
-    </h3>
-    <ul>
-        <li>Description: <%= list.description %></li>
-        <li>Image: <img style="width: 200px; height: 200px;" src="<%= list.image.url %>" alt=""></li>
-        <li>&#8377; <%= list.price.toLocaleString("en-IN") %></li>
-        <li>Place: <%= list.location %>, <%= list.country %></li>
-    </ul>
-    <span><form action="/listings" method="get"><button>Back</button></form></span>
-    <span><form action="/listings/<%= list.id %>/update" method="get"><button>Update</button></form></span>
-    <span><form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button>Delete</button></form></span>
+    <body class="">
+        <h2><%= list.title %></h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="">
+                    <img src="<%=list.image.url%>" style="height: 18rem;" class="card-img-top rounded-3" alt="...">
+                </div>
+            </div>
+            <div class="col">
+                <div class="card-body">
+                    <p class="card-text">
+                        <%= list.description %>
+                    </p>
+                    <b>&#8377; <%= list.price.toLocaleString("en-IN") %>/ night</b>
+                    <p>
+                        <%= list.location %>, <%= list.country %>
+                    </p>
+                </div>
+                <div class="btn-group mb-2">
+                    <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
+                            class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
+                    <form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button type="submit"
+                            class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- <ul>
+                <li>Description: 
+                </li>
+                <li>Image: <img style="width: 200px; height: 200px;" src="" alt=""></li>
+                <li>
+                </li>
+                <li>Place: 
+                </li>
+            </ul> -->
+    </body>
 
-</body>
-
-</html>
+    </html>

@@ -97,6 +97,22 @@ app.get("/listings/:id", async (req, res) => {
 //   res.send("Data saved");
 // });
 
+// check token for authenticate
+app.use("/admin", (req, res, next) => {
+  let { token } = req.query;
+  if (token == "54321") {
+    console.log("Right token key");
+    next(); 
+  }
+  // throw new Error(403, "ACCESS DENIDED !!");
+  res.send("ACCESS DENIDED !!");  
+});
+
+app.get("/admin",(req, res) => {
+  res.send("This is Admin page");
+});
+
+
 app.listen(8080, () => {
   console.log("Server is listening to port 8080");
 });
