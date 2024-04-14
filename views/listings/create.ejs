@@ -13,32 +13,57 @@
         <div class="container col-md-8">
             <h2>Add New Data</h2>
             <ul>
-                <form id="form" action="/listings/addNew" method="post">
+                <form id="form" novalidate class="needs-validation" action="/listings/addNew" method="post">
                     <div class="row">
                         <div class="">
                             <li>Title:<input class="form-control" type="text" name="listing[title]"
-                                    placeholder="Enter title">
+                                    placeholder="Enter title" required>
+                                <div class="valid-feedback">Look good</div>
+                                <div class="invalid-feedback">Please enter a Title.</div>
                             </li>
                         </div>
+
                         <div class="">
                             <li>Description: <input class="form-control" type="text" name="listing[description]"
-                                    placeholder="Enter description"></input></li>
+                                    placeholder="Enter description" required></input>
+                                <div class="valid-feedback">Look good</div>
+                                <div class="invalid-feedback">Please enter a Description.</div>
+                            </li>
                         </div>
-                        <div class="">
-                            <li>Image URL: <input class="form-control" type="text" name="listing[image.url]"
-                                    placeholder="https://www.example.com/image"></li>
+                        <div>
+                            <li>
+                                Image URL / Upload image:
+                                <div class="row">
+                                    <div class="col-md-6"><input class="form-control col-8" type="text"
+                                            name="listing[image.url]" placeholder="https://www.example.com/image"></div>
+                                    <div class="col-md-6">
+                                        <input type="file" class="form-control" id="inputGroupFile01">
+                                    </div>
+                                </div>
+                                <!-- <div class="valid-feedback">Please enter Picture of area.(Optional)</div>
+                                <div class="invalid-feedback"></div> -->
+                            </li>
                         </div>
                         <div class="col-md-4">
                             <li>Price: <input class="form-control" type="number" min="0" name="listing[price]"
-                                    placeholder="In Rupees"></li>
+                                    placeholder="In Rupees" required>
+                                <div class="valid-feedback">Look good</div>
+                                <div class="invalid-feedback">Please enter a Price.</div>
+                            </li>
                         </div>
                         <div class="col-md-8">
                             <li>Country: <input class="form-control" type="text" name="listing[country]"
-                                    placeholder="Example- India"></li>
+                                    placeholder="Example- India" required>
+                                    <div class="valid-feedback">Look good</div>
+                                    <div class="invalid-feedback">Please enter Country.</div>
+                            </li>
                         </div>
                         <div class="">
                             <li>Location: <input class="form-control" type="text" name="listing[location]"
-                                    placeholder="Example- Thana, new delhi"></li>
+                                    placeholder="Example- Thana, new delhi" required>
+                                <div class="valid-feedback">Look good</div>
+                                <div class="invalid-feedback">Please enter Location.</div>
+                            </li>
                         </div>
 
                         <button type="submit" class="btn btn-sm border-dark mt-2 btn-outline-secondary">Add</button>

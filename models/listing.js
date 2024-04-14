@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./reviews.js");
 const Schema = mongoose.Schema;
 
 const listingSchema = new mongoose.Schema({
@@ -10,17 +11,28 @@ const listingSchema = new mongoose.Schema({
       type: String,
       default:
         "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg",
+      set: (v) =>
+        v === ""
+          ? "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg"
+          : v,
     },
   },
   price: { type: Number, required: true },
   location: { type: String, required: true },
   country: { type: String, required: true },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+// delete all related objects
+listingSchema.post("findOneAndDelete", async (listing) => {
+  if (listing) {
+    await Review.deleteMany({ _id: { $in: listing.reviews } });
+  }
+});
 
-// set: (v) =>
-//   v === ""
-//     ? "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty-300x240.jpg"
-//     : v,
+module.exports = mongoose.model("Listing", listingSchema);

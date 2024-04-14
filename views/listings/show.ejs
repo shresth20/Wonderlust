@@ -10,7 +10,9 @@
     </head>
 
     <body class="">
-        <h2><%= list.title %></h2>
+        <h2>
+            <%= list.title %>
+        </h2>
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="">
@@ -27,24 +29,75 @@
                         <%= list.location %>, <%= list.country %>
                     </p>
                 </div>
-                <div class="btn-group mb-2">
+                <div class="btn-group mb-4">
                     <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
                             class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
                     <form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button type="submit"
                             class="btn btn-sm btn-outline-danger">Delete</button>
                     </form>
                 </div>
+                <form id="form" novalidate class="needs-validation" action="/listings/<%= list.id %>/reviews"
+                    method="post">
+                    <div class="row">
+                        <div class="col-sm-3"> <label for="rating" class="form-label">Rating Star: <span
+                                    id="slider-value"><b>-</b></span></label></div>
+                        <div class="col-sm-9"> <input type="range" class="form-range" min="0" max="5" value="0"
+                                id="rating" name="reviews[rating]">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm" placeholder="Write your Review" id="comment"
+                            name="reviews[comment]" required>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Post</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- <ul>
-                <li>Description: 
-                </li>
-                <li>Image: <img style="width: 200px; height: 200px;" src="" alt=""></li>
-                <li>
-                </li>
-                <li>Place: 
-                </li>
-            </ul> -->
+
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">All Reviews</h6>
+
+            <div class="row row-cols-1 row-cols-md-3">
+                <% for( review of list.reviews) { %>
+                    <div class="col d-flex text-body-secondary pt-3">
+                        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="5" height="55"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff"
+                                dy=".3em">32x32</text>
+                        </svg>
+                        <div class="pb-3 mb-0 small lh-sm border-bottom" style="width:100%">
+                            <strong class="d-block text-gray-dark">@username</strong>
+                            <div>
+                                Rating: <b>
+                                    <%= review.rating %> <i class="fa-solid fa-star fa-sm" style="color: #ffa600;"></i>
+                                </b><br>
+                                Comment: <%= review.comment %>
+                            </div>
+                        </div>
+                        <div class="dropstart">
+                            <span class="btn pt-0" type="" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                    class="fa-solid fa-lg fa-caret-left"></i></span>
+                            <ul class="dropdown-menu ">
+                                <li>
+                                    <form action=""><button class="dropdown-item btn">Edit</button></form>
+                                </li>
+                                <li>
+                                    <form
+                                        action="/listings/<%= list.id %>/reviews/<%= review.id %>/delete?_method=DELETE"
+                                        method="post"><button class="dropdown-item btn">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <% } %>
+            </div>
+        </div>
     </body>
 
     </html>

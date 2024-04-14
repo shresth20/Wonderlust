@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title><%=  %></title> -->
     <title>Wanderlust</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,8 +37,9 @@
                             <a class="nav-link" href="/listings/new">Add new listing</a>
                         </li>
                         <li class="nav-item">
-                            <a type="button" class="nav-link" data-bs-container="body" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus"
-                                data-bs-placement="bottom" data-bs-content="Admin side view">
+                            <a type="button" class="nav-link" data-bs-container="body" tabindex="0"
+                                data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom"
+                                data-bs-content="Admin side view">
                                 Admin
                             </a>
                         </li>
@@ -77,6 +79,7 @@
         <div class="term"><a href=""><i class="fa-solid fa-shield-halved"></i> Privacy Terms</a></div>
     </footer>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
     crossorigin="anonymous"></script>
@@ -84,10 +87,7 @@
     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
     crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/68736890cc.js" crossorigin="anonymous"></script>
-<script>
-    // js for popover
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-</script>
+
+<script src="/js/script.js"></script>
 
 </html>

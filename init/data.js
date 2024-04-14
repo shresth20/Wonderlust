@@ -347,6 +347,18 @@ const sampleListings = [
     location: "Costa Rica",
     country: "Costa Rica",
   },
+  {
+    title: "Taj Falaknuma Palace",
+    description:
+      "Get the celebrity treatment with world-class service at Taj Falaknuma Palace.",
+    image: {
+      filename: "listingimage",
+      url: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/17181467.jpg?k=73b25a9cb3b5e18877cf578c8d146a1ba4ff213a6bf3801f4480a0337bac1b1f&o=&hp=1",
+    },
+    price: 35000,
+    location: "Falaknuma, Hyderabad",
+    country: "india",
+  },
 ];
 
 module.exports = { data: sampleListings };
