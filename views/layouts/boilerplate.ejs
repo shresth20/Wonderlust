@@ -36,6 +36,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/listings/new">Add new listing</a>
                         </li>
+                        <li class="nav-item"><a id="loginBtn" class="btn" type="button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">Login</a></li>
                         <li class="nav-item">
                             <a type="button" class="nav-link" data-bs-container="body" tabindex="0"
                                 data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom"
@@ -65,9 +67,53 @@
                 </div>
             </div>
         </nav>
+
+
+        <!-- login -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Login Here</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/login" method='post'>
+                            <div class="mb-3">
+                                <label for="Username" class="form-label">Username</label>
+                                <input name="username" type="text" class="form-control" id="Username"
+                                    placeholder="Enter Your Username" autocomplete="username">
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="InputPassword1" class="form-label">Password</label>
+                                <input name="password" type="password" class="form-control" id="InputPassword1"
+                                    placeholder="Enter Password" name="loginPassword" autocomplete="current-password">
+                            </div>
+                            <div>
+                                <button type="submit" type="button" class="btn btn-sm btn-success rounded-2 "
+                                    data-bs-dismiss="modal">Login</button>
+                                <a href="/signup" class="rounded-2 position-absolute end-0 px-3 fw-bold">Create
+                                    an
+                                    account</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </head>
 
-    <main class="pt-5 mt-5 container-xl"><%- body %></main>
+    <main class="pt-5 mt-5 container-xl">
+        <!-- alerts -->
+        <%- include('../includes/flash.ejs') %>
+
+            <!-- main body -->
+            <%- body %>
+    </main>
 
     <footer class="footer border-top pt-2">
         <div class="social"><a href=""><i class="fa-brands fa-square-facebook"></i></a> <a href=""><i

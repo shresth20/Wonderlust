@@ -2,18 +2,24 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
-const methodOverride = require("method-override");
-const Listing = require("./models/listing.js");
-const Review = require("./models/reviews.js");
 const ejsMate = require("ejs-mate");
-const asyncWrap = require("./utils/asyncWrap.js");
-const ExpressError = require("./utils/expressError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
+const methodOverride = require("method-override");
+const session = require("express-session");
+const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 
+const ExpressError = require("./utils/expressError.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
+const User = require("./models/user.js");
+
+// to connect database
 main = async () => {
   await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
 };
-
 main()
   .then((res) => console.log("Connection Successfull"))
   .catch((err) => console.log(err));
@@ -26,139 +32,58 @@ app.engine("ejs", ejsMate);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// fn to check validation for listing db schema
-const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
+// cookies sessions
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
 };
+app.use(session(sessionOptions));
+app.use(flash());
 
-// fn to check validation for reviews db schema
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+// passport auth. middlewares
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
-// home
-app.get("/", (req, res) => {
-  res.send("GET request to homepage");
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// flash(alert) middleware
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.info = req.flash("info");
+  next();
 });
 
-// render listings
-app.get(
-  "/listings",
-  asyncWrap(async (req, res) => {
-    const lists = await Listing.find({});
-    res.render("listings/index.ejs", { lists });
-  })
-);
-
-// render create new list form
-app.get("/listings/new", (req, res) => {
-  res.render("listings/create.ejs");
+app.get("/demo", async (req, res) => {
+  let user = new User({
+    email: "student@gmail.com",
+    username: "student",
+  });
+  let reg = await User.register(user, "mypass");
+  res.send(reg);
 });
 
-// Create listings in db
-app.post(
-  "/listings/addNew",
-  // validateListing,
-  asyncWrap(async (req, res) => {
-    let newList = new Listing(req.body.listing);
-    await newList
-      .save()
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    res.redirect("/listings");
-  })
-);
-
-// render update list form
-app.get(
-  "/listings/:id/update",
-  asyncWrap(async (req, res) => {
-    let { id } = req.params;
-    let list = await Listing.findById(id);
-    res.render("listings/update.ejs", { list });
-  })
-);
-
-// update data in db
-app.put(
-  "/listings/addUpdate/:id",
-  // validateListing,
-  asyncWrap(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    res.redirect(`/listings/${id}`);
-  })
-);
-
-// delete listing data in db
-app.delete(
-  "/listings/delete/:id",
-  asyncWrap(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-  })
-);
-
-// add reviews in db
-app.post(
-  "/listings/:id/reviews",
-  // validateReview,
-  asyncWrap(async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.reviews);
-    listing.reviews.push(newReview);
-    await newReview.save();
-    await listing.save();
-    res.redirect(`/listings/${id}`);
-  })
-);
-
-// render show route
-app.get(
-  "/listings/:id",
-  asyncWrap(async (req, res) => {
-    let { id } = req.params;
-    const list = await Listing.findById(id).populate("reviews");
-    res.render("listings/show.ejs", { list });
-  })
-);
-
-// delete reviews in db
-app.delete(
-  "/listings/:id/reviews/:reviewId/delete",
-  asyncWrap(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/listings/${id}`);
-  })
-);
+// url redirect routes middleware
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 // next all error to middleware
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found !!"));
 });
-
 // return error status and message
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Somthing Went Wrong !!" } = err;
-  // res.status(statusCode).send(message);
   res.render("error.ejs", { statusCode, message });
 });
 
@@ -198,4 +123,11 @@ app.listen(8080, () => {
 
 // app.get("/admin", (req, res) => {
 //   res.send("This is Admin page");
+// });
+
+// app.use(cookieParser());
+// // store cookies
+// app.get("/cookie", async (req, res) => {
+//   console.dir(req.cookies);
+//   res.send("cookies save ho gya");
 // });
