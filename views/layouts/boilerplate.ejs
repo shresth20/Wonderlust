@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <title><%=  %></title> -->
-    <title>Wanderlust</title>
+    <title>Wonderlust</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
         <!-- navbar -->
         <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top border-bottom">
             <div class="container-xl">
-                <a class="navbar-brand " href="/listings"><b>Wanderlust</b></a>
+                <a class="navbar-brand " href="/listings"><b>Wonderlust</b></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -36,8 +36,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/listings/new">Add new listing</a>
                         </li>
-                        <li class="nav-item"><a id="loginBtn" class="btn" type="button" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">Login</a></li>
                         <li class="nav-item">
                             <a type="button" class="nav-link" data-bs-container="body" tabindex="0"
                                 data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom"
@@ -59,6 +57,24 @@
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li> -->
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <% if (!currentUser) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/signup">Signup</a>
+                            </li>
+                            <li class="nav-item"><a id="loginBtn" class="nav-link" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">Login</a>
+                            </li>
+                            <% } else { %>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Logout</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="">@<%= currentUser.username %></a>
+                                </li>
+                                <% } %>
+
                     </ul>
                     <!-- <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -83,7 +99,7 @@
                             <div class="mb-3">
                                 <label for="Username" class="form-label">Username</label>
                                 <input name="username" type="text" class="form-control" id="Username"
-                                    placeholder="Enter Your Username" autocomplete="username">
+                                    placeholder="Enter Your Username" autocomplete="">
 
                             </div>
                             <div class="mb-3">
@@ -135,5 +151,6 @@
 <script src="https://kit.fontawesome.com/68736890cc.js" crossorigin="anonymous"></script>
 
 <script src="/js/script.js"></script>
+
 
 </html>

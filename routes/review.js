@@ -3,19 +3,7 @@ const router = express.Router({ mergeParams: true }); // mergeParams to get id f
 const Listing = require("../models/listing.js");
 const Review = require("../models/reviews.js");
 const asyncWrap = require("../utils/asyncWrap.js");
-const ExpressError = require("../utils/expressError.js");
-const { listingSchema, reviewSchema } = require("../schema.js");
-
-// fn to check validation for reviews db schema
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+const { validateReview, isLoggedIn } = require("../middleware.js");
 
 // add reviews in db
 router.post(

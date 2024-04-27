@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Wanderlust</title>
+        <title>Wonderlust</title>
     </head>
 
     <body class="">
@@ -24,34 +24,39 @@
                     <p class="card-text">
                         <%= list.description %>
                     </p>
+
                     <b>&#8377; <%= list.price.toLocaleString("en-IN") %>/ night</b>
                     <p>
                         <%= list.location %>, <%= list.country %>
                     </p>
+                    <p>Owned by- <i>@<%= list.owner.username %></i></p>
                 </div>
-                <div class="btn-group mb-4">
-                    <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
-                            class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
-                    <form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button type="submit"
-                            class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                </div>
-                <form id="form" novalidate class="needs-validation" action="/listings/<%= list.id %>/reviews"
-                    method="post">
-                    <div class="row">
-                        <div class="col-sm-3"> <label for="rating" class="form-label">Rating Star: <span
-                                    id="slider-value"><b>-</b></span></label></div>
-                        <div class="col-sm-9"> <input type="range" class="form-range" min="0" max="5" value="0"
-                                id="rating" name="reviews[rating]">
-                        </div>
+                <% if (currentUser && currentUser._id.equals(list.owner._id)) { %>
+                    <div class="btn-group mb-4">
+                        <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
+                                class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
+                        <form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button
+                                type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
                     </div>
-                    <div class="input-group input-group-sm mb-3">
-                        <input type="text" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-sm" placeholder="Write your Review" id="comment"
-                            name="reviews[comment]" required>
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Post</button>
-                    </div>
-                </form>
+                    <% } %>
+
+                        <form id="form" novalidate class="needs-validation" action="/listings/<%= list.id %>/reviews"
+                            method="post">
+                            <div class="row">
+                                <div class="col-sm-3"> <label for="rating" class="form-label">Rating Star: <span
+                                            id="slider-value"><b>-</b></span></label></div>
+                                <div class="col-sm-9"> <input type="range" class="form-range" min="0" max="5" value="0"
+                                        id="rating" name="reviews[rating]">
+                                </div>
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="text" class="form-control" aria-label="Sizing example input"
+                                    aria-describedby="inputGroup-sizing-sm" placeholder="Write your Review" id="comment"
+                                    name="reviews[comment]" required>
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Post</button>
+                            </div>
+                        </form>
             </div>
         </div>
 
