@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -64,13 +67,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/demo", async (req, res) => {
-  let user = new User({
-    email: "student@gmail.com",
-    username: "student",
-  });
-  let reg = await User.register(user, "mypass");
-  res.send(reg);
+// redirect to main page
+app.get("/", (req, res) => {
+  res.redirect("/listings");
 });
 
 // url redirect routes middleware
@@ -131,4 +130,13 @@ app.listen(8080, () => {
 // app.get("/cookie", async (req, res) => {
 //   console.dir(req.cookies);
 //   res.send("cookies save ho gya");
+// });
+
+// app.get("/demo", async (req, res) => {
+//   let user = new User({
+//     email: "student@gmail.com",
+//     username: "student",
+//   });
+//   let reg = await User.register(user, "mypass");
+//   res.send(reg);
 // });

@@ -16,7 +16,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="">
-                    <img src="<%=list.image.url%>" style="height: 18rem;" class="card-img-top rounded-3" alt="...">
+                    <img src="<%=list.image.url%>" style="height: 20rem;" class="card-img-top rounded-3" alt="...">
                 </div>
             </div>
             <div class="col">
@@ -32,31 +32,47 @@
                     <p>Owned by- <i>@<%= list.owner.username %></i></p>
                 </div>
                 <% if (currentUser && currentUser._id.equals(list.owner._id)) { %>
-                    <div class="btn-group mb-4">
+                    <div class="btn-group mb-3">
                         <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
                                 class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
-                        <form action="/listings/delete/<%= list.id %>?_method=DELETE" method="post"><button
-                                type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        <form action="/listings/<%= list.id %>?_method=DELETE" method="post"><button type="submit"
+                                class="btn btn-sm btn-outline-danger">Delete</button>
                         </form>
                     </div>
                     <% } %>
-
-                        <form id="form" novalidate class="needs-validation" action="/listings/<%= list.id %>/reviews"
-                            method="post">
-                            <div class="row">
-                                <div class="col-sm-3"> <label for="rating" class="form-label">Rating Star: <span
-                                            id="slider-value"><b>-</b></span></label></div>
-                                <div class="col-sm-9"> <input type="range" class="form-range" min="0" max="5" value="0"
-                                        id="rating" name="reviews[rating]">
+                        <div class="p-3 bg-body rounded shadow-sm">
+                            <form id="form" novalidate class="needs-validation "
+                                action="/listings/<%= list.id %>/reviews" method="post">
+                                <div class="row">
+                                    <div class="col-sm-3 "> Rating Star:</div>
+                                    <div class="col-sm-9">
+                                        <fieldset class="starability-grow">
+                                            <input type="radio" id="no-rate" class="input-no-rate" name="rating"
+                                                value="0" checked aria-label="No rating." />
+                                            <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+                                            <label for="first-rate1" title="Terrible">1 star</label>
+                                            <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+                                            <label for="first-rate2" title="Not good">2 stars</label>
+                                            <input type="radio" id="first-rate3" name="reviews[rating]" value="3" />
+                                            <label for="first-rate3" title="Average">3 stars</label>
+                                            <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+                                            <label for="first-rate4" title="Very good">4 stars</label>
+                                            <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+                                            <label for="first-rate5" title="Amazing">5 stars</label>
+                                        </fieldset>
+                                        <!-- <input type="range" class="form-range" min="1" max="5" value="0"
+                                        id="rating" name="reviews[rating]"> -->
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" placeholder="Write your Review" id="comment"
-                                    name="reviews[comment]" required>
-                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Post</button>
-                            </div>
-                        </form>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" placeholder="Write your Review"
+                                        id="comment" name="reviews[comment]" required>
+                                    <button class="btn btn-outline-secondary" type="submit"
+                                        id="button-addon2">Post</button>
+                                </div>
+                            </form>
+                        </div>
             </div>
         </div>
 
@@ -75,37 +91,42 @@
                                 dy=".3em"></text>
                         </svg>
                         <div class="pb-3 mb-0 small lh-sm border-bottom" style="width:100%">
-                            <strong class="d-block text-gray-dark">@username</strong>
+                            <strong class="d-block text-gray-dark">@<%= review.author.username %></strong>
                             <div>
-                                Rating: <b>
+                                <p class="starability-result" data-rating="<%= review.rating %>">
+                                </p>
+                                <!-- Rating: <b>
                                     <%= review.rating %> <i class="fa-solid fa-star fa-sm" style="color: #ffa600;"></i>
-                                </b><br>
+                                </b><br> -->
                                 Comment: <%= review.comment %>
                             </div>
                         </div>
-                        <div class="dropstart">
-                            <span class="btn pt-0" type="" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                    class="fa-solid fa-lg fa-caret-left"></i></span>
-                            <ul class="dropdown-menu ">
-                                <li>
-                                    <form action="">
-                                        <button class="dropdown-item btn">Edit</button>
-                                        <!-- <div class="input-group input-group-sm ">
+
+                        <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
+                            <div class="dropstart">
+                                <span class="btn pt-0" type="" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fa-solid fa-lg fa-caret-left"></i></span>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form action="">
+                                            <button class="dropdown-item btn">Edit</button>
+                                            <!-- <div class="input-group input-group-sm ">
                                             <input type="text" class="form-control" aria-label="Sizing example input"
                                                 aria-describedby="inputGroup-sizing-sm" placeholder="Rewrite review" id="comment"
                                                 name="reviews[comment]" required>
                                             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Post</button>
                                         </div> -->
-                                    </form>
-                                </li>
-                                <li>
-                                    <form
-                                        action="/listings/<%= list.id %>/reviews/<%= review.id %>/delete?_method=DELETE"
-                                        method="post"><button class="dropdown-item btn">Delete</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form
+                                            action="/listings/<%= list.id %>/reviews/<%= review.id %>/delete?_method=DELETE"
+                                            method="post"><button class="dropdown-item btn">Delete</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <% } %>
 
                     </div>
                     <% } %>

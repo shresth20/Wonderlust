@@ -13,7 +13,7 @@
         <div class="container col-md-8">
             <h2>Add New Data</h2>
             <ul>
-                <form id="form" novalidate class="needs-validation" action="/listings/addNew" method="post">
+                <form id="form" novalidate class="needs-validation" action="/listings/create" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="">
                             <li>Title:<input class="form-control" type="text" name="listing[title]"
@@ -34,11 +34,12 @@
                             <li>
                                 Image URL / Upload image:
                                 <div class="row">
-                                    <div class="col-md-6"><input class="form-control col-8" type="text"
-                                            name="listing[image.url]" placeholder="https://www.example.com/image"></div>
+                                    <!-- <div class="col-md-6"><input class="form-control col-8" type="text"
+                                            name="listing[image.url]" placeholder="https://www.example.com/image">
+                                        </div> -->
                                     <div class="col-md-6">
-                                        <input type="file" class="form-control" id="inputGroupFile01">
-                                    </div>
+                                        <input name="listing[image]" type="file" class="form-control" id="">
+                                    </div> 
                                 </div>
                                 <!-- <div class="valid-feedback">Please enter Picture of area.(Optional)</div>
                                 <div class="invalid-feedback"></div> -->
