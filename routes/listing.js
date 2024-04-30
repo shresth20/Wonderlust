@@ -4,8 +4,8 @@ const asyncWrap = require("../utils/asyncWrap.js");
 const listingController = require("../controllers/listings.js");
 const { validateListing, isLoggedIn, isOwner } = require("../middleware.js");
 const multer = require("multer");
-const { cloudStorage } = require("../cloudConfig.js");
-const upload = multer({ cloudStorage });
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 router
   .route("/")
@@ -17,15 +17,19 @@ router
   // render create new list form
   .get(isLoggedIn, listingController.renderCreate)
   // Create listings in db
-  // .post(
-  //   isLoggedIn,
-  // upload.single("listing[image]"),
-  //   // validateListing,
-  //   asyncWrap(listingController.createListing)
-  // )
+  .post(
+    isLoggedIn,
+  upload.single("listing[image]"),
+    // validateListing,
+    asyncWrap(listingController.createListing)
+  )
   .post(upload.single("listing[image]"), (req, res) => {
     res.send(req.file);
   });
+  // .post(upload.single("listing[image]"), (req, res) => {
+  //   console.log(req.file); // to see what is returned to you
+  //   res.send(req.file);
+  // });
 
 router
   .route("/:id/update")
@@ -45,5 +49,5 @@ router
   .get(asyncWrap(listingController.showListing))
   // delete listing data in db
   .delete(isLoggedIn, isOwner, asyncWrap(listingController.deleteListing));
-
+  
 module.exports = router;
