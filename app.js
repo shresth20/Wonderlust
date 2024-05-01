@@ -8,6 +8,7 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
@@ -19,9 +20,11 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const User = require("./models/user.js");
 
+const DB_URL = process.env.ATLASDB_URL;
 // to connect database
 main = async () => {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
+  // await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
+  await mongoose.connect(DB_URL);
 };
 main()
   .then((res) => console.log("Connection Successfull"))
@@ -35,9 +38,23 @@ app.engine("ejs", ejsMate);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// store session data
+const sessionStore = MongoStore.create({
+  mongoUrl: DB_URL,
+  crypto: {
+    secret: process.env.SESSION_SECRET,
+  },
+  touchAfter: 24 * 3600, 
+});
+
+sessionStore.on("error", () => {
+  console.log("ERROR IN MONGO SESSION STORE", err);
+});
+
 // cookies sessions
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  store: sessionStore,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -46,6 +63,7 @@ const sessionOptions = {
     httpOnly: true,
   },
 };
+
 app.use(session(sessionOptions));
 app.use(flash());
 

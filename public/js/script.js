@@ -29,3 +29,16 @@ const popoverList = [...popoverTriggerList].map(
     );
   });
 })();
+
+// tax switch
+let taxSwitch = document.querySelector("#flexSwitchCheckReverse");
+taxSwitch.addEventListener("click", () => {
+  let taxInfo = document.querySelectorAll(".tax");
+  for (info of taxInfo) {
+    if (info.style.display != "inline") {
+      info.style.display = "inline";
+    } else {
+      info.style.display = "none";
+    }
+  }
+});
