@@ -18,8 +18,15 @@ const listingSchema = new mongoose.Schema({
     },
   },
   price: { type: Number, required: true },
-  location: { type: String, required: true },
+  location: {
+    name: { type: String, required: true },
+    geometry: {
+      type: { type: String, enum: ["Point"], required: true },
+      coordinates: { type: [Number], required: true },
+    },
+  },
   country: { type: String, required: true },
+  // category:{type:String, enum:["moutains, farms, rooms"]},
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

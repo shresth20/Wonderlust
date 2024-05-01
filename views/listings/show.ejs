@@ -1,5 +1,9 @@
 <% layout('/layouts/boilerplate') -%>
-
+<script>
+    const map_key = "<%= process.env.MAP_KEY %>";
+    const coordinates = "<%- JSON.stringify(list.location.geometry.coordinates) %>";
+    
+</script>
 
     <body class="">
         <h2>
@@ -125,14 +129,14 @@
             <% } %>
 
                 <!-- map -->
-                <div class="my-3 p-3 bg-body rounded shadow-sm">
-                    <h6 class="border-bottom pb-2 mb-0">Location</h6>
-                    <div style=" height: 480px" id="mapContainer"></div>
+                <div id="markers-on-the-map" class="my-3 p-3 bg-body rounded shadow-sm">
+                    <h6 class="pb-2 mb-0">Location</h6>
+                    <div class="border" style="height: 480px; " id="map"></div>
                 </div>
     </body>
 
-<!-- 
-    <form>
+    
+    <!-- <form>
         <label>Address</label>
         <input type="text" name="address" id="address" onchange="getCoordinates()">
         <br>
@@ -146,7 +150,7 @@
     <script types="text/javascript">
         getCoordinates = () => {
             var address = document.getElementById('address').value;
-            var theUrl = "https://geocoder.1s.hereapi.com/6.2/geocode.json?searchtext=" + address + "8gen-9&apiKey=(key goes here}";
+            var theUrl = "https://geocoder.1s.hereapi.com/6.2/geocode.json?searchtext=" + address + "8gen-9&apiKey=fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E";
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", theUrl, false);
             xmlHttp.send(nuLL);

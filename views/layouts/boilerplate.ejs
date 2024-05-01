@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title><%=  %></title> -->
+    <link rel="icon" type="image/png" href="">
     <title>Wonderlust</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,10 +13,9 @@
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        
+
     <!-- here.com map -->
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-        
 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/ratingStar.css">
@@ -28,7 +27,8 @@
         <!-- navbar -->
         <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top border-bottom">
             <div class="container-xl">
-                <a class="navbar-brand " href="/listings"><b>Wonderlust</b></a>
+                <a id="navbar-brand" class="navbar-brand fw-bold" href="/listings"><i
+                        class="fa-solid fa-person-walking-luggage"></i>Wonderlust</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -36,13 +36,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/listings">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/listings/create">Add new listing</a>
-                        </li>
-
                         <!-- <li class="nav-item">
                             <a type="button" class="nav-link" data-bs-container="body" tabindex="0"
                                 data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom"
@@ -50,34 +43,30 @@
                                 Admin
                             </a>
                         </li> -->
-
-                        <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li> -->
-
                     </ul>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <div class="navbar-nav me-auto search">
+                        <form class="d-flex" role="search">
+                            <input type="text" class="form-control rounded-pill" type="search" placeholder="Search"
+                                aria-describedby="button-addon2">
+                            <button id="search-btn" class="btn rounded-pill" type="submit" id="button-addon2"><i
+                                    class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
+                        </form>
+                    </div>
+                    <ul class="navbar-nav ms-auto  mb-lg-0">
+                        <li class="nav-item">
+                            <a id="createList" class="nav-link text-nowrap fw-bold " href="/listings/create">Wonderlust
+                                your home</a>
+                        </li>
                         <% if (!currentUser) { %>
                             <li class="nav-item">
-                                <a class="nav-link" href="/signup">Signup</a>
+                                <a class="nav-link fw-bold" href="/signup">Signup</a>
                             </li>
-                            <li class="nav-item"><a id="loginBtn" class="nav-link" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">Login</a>
+                            <li class="nav-item"><a id="loginBtn" class="nav-link fw-bold" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Login</a>
                             </li>
                             <% } else { %>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/logout">Logout</a>
+                                    <a class="nav-link fw-bold" href="/logout">Logout</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="">@<%= currentUser.username %></a>
@@ -146,14 +135,14 @@
             <a href=""><i class="fa-brands fa-square-snapchat"></i></a> <a href=""><i
                     class="fa-brands fa-linkedin"></i></a>
         </div>
-        <div class="company"><a href=""><i class="fa-regular fa-copyright"></i> Wonderlust Private Limited</a></div>
+        <div class="company"><a href=""><i class="fa-regular fa-copyright"></i>Wonderlust Private Limited</a></div>
         <div class="term"><a href=""><i class="fa-solid fa-shield-halved"></i> Privacy Terms</a></div>
     </footer>
 </body>
 
-<!-- here.com map api js -->
-<script type="text/javascript" charset="utf-8" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" ></script>
 
+<!-- here.com map api js -->
+<script type="text/javascript" charset="utf-8" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
 <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
 <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
 <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
