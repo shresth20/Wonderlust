@@ -44,7 +44,7 @@ const sessionStore = MongoStore.create({
   crypto: {
     secret: process.env.SESSION_SECRET,
   },
-  touchAfter: 24 * 3600, 
+  touchAfter: 24 * 3600,
 });
 
 sessionStore.on("error", () => {
