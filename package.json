@@ -5,7 +5,7 @@
   "name": "project",
   "version": "1.0.0",
   "description": "",
-  "main": "data.js", 
+  "main": "data.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "cloudinary": "^1.21.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
