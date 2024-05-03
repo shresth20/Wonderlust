@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "rendom",
+    folder: "Wonderlust_DEV",
     format: async (req, file) => {
       // Check file extension and return format accordingly
       const fileExtension = file.originalname.split(".").pop();
@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
       }
       throw new Error("Invalid file format");
     },
-    public_id: (req, file) => "computed-filename-using-request",
+    // public_id: (req, file) => "computed-filename-using-request",
   },
 });
 

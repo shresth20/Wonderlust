@@ -8,6 +8,7 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
@@ -19,9 +20,11 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const User = require("./models/user.js");
 
+const DB_URL = process.env.ATLASDB_URL;
 // to connect database
 main = async () => {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
+  // await mongoose.connect("mongodb://127.0.0.1:27017/wonderlust");
+  await mongoose.connect(DB_URL);
 };
 main()
   .then((res) => console.log("Connection Successfull"))
@@ -35,9 +38,23 @@ app.engine("ejs", ejsMate);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// store session data
+const sessionStore = MongoStore.create({
+  mongoUrl: DB_URL,
+  crypto: {
+    secret: process.env.SESSION_SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+
+sessionStore.on("error", () => {
+  console.log("ERROR IN MONGO SESSION STORE", err);
+});
+
 // cookies sessions
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  store: sessionStore,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -46,6 +63,7 @@ const sessionOptions = {
     httpOnly: true,
   },
 };
+
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -90,53 +108,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("Server is listening to port 8080");
 });
-
-// test data listing
-// app.get("/test", async (req, res) => {
-//   let sampleListings = new Listing ({
-//     title: "New villa",
-//     description:
-//       "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
-//     image: {
-//       filename: "listingimage",
-//       url: "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-//     },
-//     price: 1500,
-//     location: "Malibu",
-//     country: "United States",
-//   })
-//   await sampleListings.save()
-//   console.log("saved")
-//   res.send("Data saved");
-// });
-
-// // check token for authenticate
-// app.use("/admin", (req, res, next) => {
-//   let { token } = req.query;
-//   if (token == "54321") {
-//     console.log("Right token key");
-//     next();
-//   }
-//   // throw new Error(403, "ACCESS DENIDED !!");
-//   res.send("ACCESS DENIDED !!");
-// });
-
-// app.get("/admin", (req, res) => {
-//   res.send("This is Admin page");
-// });
-
-// app.use(cookieParser());
-// // store cookies
-// app.get("/cookie", async (req, res) => {
-//   console.dir(req.cookies);
-//   res.send("cookies save ho gya");
-// });
-
-// app.get("/demo", async (req, res) => {
-//   let user = new User({
-//     email: "student@gmail.com",
-//     username: "student",
-//   });
-//   let reg = await User.register(user, "mypass");
-//   res.send(reg);
-// });

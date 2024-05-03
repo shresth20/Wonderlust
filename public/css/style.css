@@ -17,6 +17,21 @@ main {
     flex: 1;
 }
 
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+}
+
+#navbar-brand {
+    color: #ff5252;
+}
+
+#createList {
+    font-size: 14px;
+}
+
 #allcards {
     display: flex;
     justify-content: space-around;
@@ -68,4 +83,51 @@ img {
 
 a {
     text-decoration: none;
+}
+
+#filters {
+    display: flex;
+}
+
+.filters {
+    margin-right: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.filters p {
+    font-size: small;
+}
+
+.filters i {
+    font-size: large;
+}
+
+.filters:hover {
+    opacity: 1;
+}
+
+.tax {
+    display: none;
+}
+
+.tax-toggle {
+    border: solid 1.5px gray;
+    border-radius: 12px;
+    height: 2.8rem;
+    color: rgb(73, 72, 72);
+    font-size: 13px;
+    padding: 10px 0px 0px 0px;
+
+}
+
+.tax-toggle:hover {
+    background-color: #f2f2f2;
+    border-color: black;
+
+}
+
+#search-btn {
+    background-color: #ff4242;
 }
