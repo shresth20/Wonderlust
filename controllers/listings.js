@@ -58,3 +58,4 @@ module.exports.showListing = async (req, res) => {
   }
   res.render("listings/show.ejs", { list });
 };
+
