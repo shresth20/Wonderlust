@@ -344,7 +344,10 @@ const sampleListings = [
       url: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhY2glMjBob3VzZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
     },
     price: 1800,
-    location: "Costa Rica",
+    location: {
+      name: "Costa Rica",
+      geometry: { type: "Point", coordinates: [83.0076292, 25.3356491] },
+    },
     country: "Costa Rica",
   },
   {
@@ -356,9 +359,31 @@ const sampleListings = [
       url: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/17181467.jpg?k=73b25a9cb3b5e18877cf578c8d146a1ba4ff213a6bf3801f4480a0337bac1b1f&o=&hp=1",
     },
     price: 35000,
-    location: "Falaknuma, Hyderabad",
+    location: {
+      name: "Falaknuma, Hyderabad",
+      geometry: { type: "Point", coordinates: [83.0076292, 25.3356491] },
+    },
     country: "india",
   },
 ];
 
 module.exports = { data: sampleListings };
+
+// atlas db
+
+// "title": "Cozy Beachfront Cottage",
+// "description": "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
+// "image": {
+//   "filename": "listingimage",
+//   "url": "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+// },
+// "price": 1500,
+// "location": {
+//   "name": "Malibu",
+//   "geometry": {
+//     "type": "Point",
+//     "coordinates": [83.0076292, 25.3356491]
+//   }
+// },
+// "country": "United States"
+

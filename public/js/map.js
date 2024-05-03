@@ -1,81 +1,163 @@
-// Here.com map api
-function addIml(map) {
-  // HERE platform stores data in catalogs. Define Here Resource Name (HRN) of the catalog
-  const catalogHrn = "hrn:here:data::olp-here:dh-showcase-dc-transit";
-  // A catalog is a collection of layers that are managed as a single set. Define the layer that stores data
-  const layerId = "dc-transit";
-  // Instantiate the IML service
-  const service = platform.getIMLService();
-  // Create a provider for the custom user defined data
-  const imlProvider = new H.service.iml.Provider(service, catalogHrn, layerId);
+// maplibre.org map api with NO APIKEY
 
-  // Get the style object
-  const style = imlProvider.getStyle();
-  // Query the sub-section of the style configuration
-  const styleConfig = style.extractConfig(["iml"]);
+const COORDINATES = DBlist.location.geometry.coordinates ; //[77.22445, 28.63576]; // [Longitude, Latitude], 
+const TITLE = DBlist.title;
 
-  // Add dashes
-  styleConfig.layers.iml.lines.draw.lines.dash = [1, 1];
-  // Set line width per zoom level
-  styleConfig.layers.iml.lines.draw.lines.width = [
-    [5, 5000],
-    [8, 800],
-    [10, 200],
-    [12, 160],
-    [14, 60],
-    [18, 20],
-  ];
+const map = (window.map = new maplibregl.Map({
+  container: "map",
+  zoom: 8,
+  center: COORDINATES,
+  pitch: 30,
+  hash: true,
+  // style(control view) without apikey
+  style: {
+    version: 8,
+    sources: {
+      osm: {
+        type: "raster",
+        tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        attribution: "&copy; Wonderlust by Shresth",
+        maxzoom: 19,
+      },
+      // Use a different source for terrain and hillshade layers, to improve render quality
+      terrainSource: {
+        type: "raster-dem",
+        url: "https://demotiles.maplibre.org/terrain-tiles/tiles.json",
+        tileSize: 256,
+      },
+      hillshadeSource: {
+        type: "raster-dem",
+        url: "https://demotiles.maplibre.org/terrain-tiles/tiles.json",
+        tileSize: 256,
+      },
+    },
 
-  // Merge the style configuration back
-  style.mergeConfig(styleConfig);
+    layers: [
+      {
+        id: "osm",
+        type: "raster",
+        source: "osm",
+      },
+      {
+        id: "hills",
+        type: "hillshade",
+        source: "hillshadeSource",
+        layout: { visibility: "visible" },
+        paint: { "hillshade-shadow-color": "#473B24" },
+      },
+    ],
 
-  // Add a tile layer to the map
-  map.addLayer(new H.map.layer.TileLayer(imlProvider));
-}
+    terrain: {
+      source: "terrainSource",
+      exaggeration: 1,
+    },
+  },
+  maxZoom: 18,
+  maxPitch: 85,
+}));
 
-// Step 1: initialize communication with the platform
-// In your own code, replace apikey value with your own apikey
-const platform = new H.service.Platform({
-  apikey: "fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E",
-});
-
-const defaultLayers = platform.createDefaultLayers();
-
-// Step 2: initialize a map
-const map = new H.Map(
-  document.getElementById("map"),
-  defaultLayers.vector.normal.map,
-  {
-    center: new H.geo.Point(26.85471, 80.92135), // lat: ,lng:{ lat: 26.85471, lng: 80.92135 }
-    zoom: 10,
-  }
+map.addControl(
+  new maplibregl.NavigationControl({
+    visualizePitch: true,
+    showZoom: true,
+    showCompass: true,
+  })
 );
 
-// Add a resize listener to make sure that the map occupies the whole container
-window.addEventListener("resize", () => map.getViewPort().resize());
+map.addControl(
+  new maplibregl.TerrainControl({
+    source: "terrainSource",
+    exaggeration: 1,
+  })
+);
 
-// Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+map.on("load", async () => {
+  // Add a GeoJSON source for the marker
+  map.addSource("marker", {
+    type: "geojson",
+    data: {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: {
+            description: `<h5>${TITLE}</h5> <p>Extact Location provided after booking!</p>`,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: COORDINATES,
+          },
+        },
+      ],
+    },
+  });
 
-// Step 4: create the default UI component, for displaying bubbles
-const ui = H.ui.UI.createDefault(map, defaultLayers);
+  // Add a layer for the marker
+  map.addLayer({
+    id: "marker",
+    type: "circle",
+    source: "marker",
+    paint: {
+      "circle-radius": 10,
+      "circle-color": "#ff00009a",
+    },
+  });
 
-// Step 5: Main logic goes here
-addIml(map);
+  // create and add the marker
+  const marker = new maplibregl.Marker({
+    color: "red",
+  })
+    .setLngLat(COORDINATES)
+    .addTo(map);
 
-// msg on point
+  // Create a popup, but don't add it to the map yet
+  const popup = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+  });
 
-// // Define your location as a H.geo.Point
-// var location = new H.geo.Point(28.7041,  77.1025);
+  // Show the popup when the user hovers over the marker layer
+  map.on("mouseenter", "marker", (e) => {
+    // Change the cursor style as a UI indicator
 
-// // Create an icon
-// var icon = new H.map.Icon('path_to_your_icon.png');
+    // Get the coordinates and description from the feature
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const description = e.features[0].properties.description;
 
-// // Create a marker using the icon
-// var marker = new H.map.Marker(location, { icon: icon });
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
 
-// // Add the marker to the map
-// map.addObject(marker);
+    // Populate the popup and set its coordinates
+    // based on the feature found
+    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+  });
 
-// console.log("hello")
+  // Hide the popup when the user leaves the marker layer
+  map.on("mouseleave", "marker", () => {
+    map.getCanvas().style.cursor = "";
+    popup.remove();
+  });
 
+  // map.getCanvas().style.cursor = "pointer";
+  map.setLayoutProperty("label_country", "text-field", ["get", "name:en"]);
+});
+
+// SIMPLE
+// // create the popup
+// const popup = new maplibregl.Popup({
+//     closeButton: false,
+//     closeOnClick: false
+// }).setText('Construction on the Washington Monument began in 1848.');
+
+// // create and add the marker
+// const marker = new maplibregl.Marker({
+//     color: 'red'
+// })
+//     .setLngLat([0.11, 51.49])
+//     .setPopup(popup)
+//     .addTo(map);

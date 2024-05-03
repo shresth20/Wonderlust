@@ -1,9 +1,8 @@
 <% layout('/layouts/boilerplate') -%>
-<script>
-    const map_key = "<%= process.env.MAP_KEY %>";
-    const coordinates = "<%- JSON.stringify(list.location.geometry.coordinates) %>";
-    
-</script>
+    <script>
+        const mapToken = "<%= process.env.MAP_KEY %>";
+        const DBlist = <%- JSON.stringify(list) %>;
+    </script>
 
     <body class="">
         <h2>
@@ -22,7 +21,7 @@
                     </p>
                     <b>&#8377; <%= list.price.toLocaleString("en-IN") %>/ night</b>
                     <p>
-                        <%= list.location %>, <%= list.country %>
+                        <%= list.location.name %>, <%= list.country %>
                     </p>
                     <div class="row">
                         <p class="col-sm-5">Owned by- <i>@<%= list.owner.username %></i></p>
@@ -134,29 +133,3 @@
                     <div class="border" style="height: 480px; " id="map"></div>
                 </div>
     </body>
-
-    
-    <!-- <form>
-        <label>Address</label>
-        <input type="text" name="address" id="address" onchange="getCoordinates()">
-        <br>
-        <label>Latitude</label>
-        <input type="text" name="lat" id="lat">
-        <br>
-        <label>Longitude</label>
-        <input type="text" name="1ng" id="1ng">
-        <button>submit</button>
-    </form>
-    <script types="text/javascript">
-        getCoordinates = () => {
-            var address = document.getElementById('address').value;
-            var theUrl = "https://geocoder.1s.hereapi.com/6.2/geocode.json?searchtext=" + address + "8gen-9&apiKey=fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E";
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrl, false);
-            xmlHttp.send(nuLL);
-            var json = JSON.parse(xm1Http.responseText);
-            console.Log(json);
-            document.getElementById('lat').value = json.Response.View[0].Result[0].Location.DisplayPosition.Latitude;
-            document.getElementById('lng').value = json.Response.View[0].Result[0].Location.DisplayPosition.Longitude;
-        }
-    </script> -->
