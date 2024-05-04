@@ -371,19 +371,27 @@ module.exports = { data: sampleListings };
 
 // atlas db
 
-// "title": "Cozy Beachfront Cottage",
-// "description": "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
-// "image": {
-//   "filename": "listingimage",
-//   "url": "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-// },
-// "price": 1500,
-// "location": {
-//   "name": "Malibu",
-//   "geometry": {
-//     "type": "Point",
-//     "coordinates": [83.0076292, 25.3356491]
+// {
+//   "_id": {
+//     "$oid": "66350c1cb7a3056c59133bd5"
+//   },
+//   "title": "Cozy Beachfront Cottage",
+//   "description": "Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.",
+//   "image": {
+//     "filename": "listingimage",
+//     "url": "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+//   },
+//   "price": 1500,
+//   "location": {
+//     "name": "Malibu",
+//     "geometry": {
+//       "type": "Point",
+//       "coordinates": [83.0076292, 25.3356491]
+//     }
+//   },
+//   "country": "United States",
+//   "owner": {
+//       "$oid": "663290b97354d36a76830719"
 //   }
-// },
-// "country": "United States"
+// }
 
