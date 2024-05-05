@@ -47,9 +47,9 @@
                         </li> -->
                     </ul>
                     <div class="navbar-nav me-auto search">
-                        <form class="d-flex" role="search">
-                            <input type="text" class="form-control rounded-pill" type="search" placeholder="Search"
-                                aria-describedby="button-addon2">
+                        <form action="/listings/search" method="get" class="d-flex needs-validation" role="search" novalidate>
+                            <input type="text" class="form-control rounded-pill" type="search" placeholder="Search by Location"
+                                aria-describedby="button-addon2" name="location" required>
                             <button id="search-btn" class="btn rounded-pill" type="submit" id="button-addon2"><i
                                     class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
                         </form>
@@ -71,15 +71,11 @@
                                     <a class="nav-link fw-bold" href="/logout">Logout</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="">@<%= currentUser.username %></a>
+                                    <a class="nav-link fw-bold" href="">@<%= currentUser.username %></a>
                                 </li>
                                 <% } %>
 
                     </ul>
-                    <!-- <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
                 </div>
             </div>
         </nav>
@@ -108,7 +104,7 @@
                                     placeholder="Enter Password" name="loginPassword" autocomplete="current-password">
                             </div>
                             <div>
-                                <button type="submit" type="button" class="btn btn-sm btn-success rounded-2 "
+                                <button type="submit" type="button" class="btn btn-sm btn-primary rounded-2 "
                                     data-bs-dismiss="modal">Login</button>
                                 <a href="/signup" class="rounded-2 position-absolute end-0 px-3 fw-bold">Create
                                     an

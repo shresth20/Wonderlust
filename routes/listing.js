@@ -19,17 +19,17 @@ router
   // Create listings in db
   .post(
     isLoggedIn,
-  upload.single("listing[image]"),
+    upload.single("listing[image]"),
     // validateListing,
     asyncWrap(listingController.createListing)
   )
   .post(upload.single("listing[image]"), (req, res) => {
     res.send(req.file);
   });
-  // .post(upload.single("listing[image]"), (req, res) => {
-  //   console.log(req.file); // to see what is returned to you
-  //   res.send(req.file);
-  // });
+// .post(upload.single("listing[image]"), (req, res) => {
+//   console.log(req.file); // to see what is returned to you
+//   res.send(req.file);
+// });
 
 router
   .route("/:id/update")
@@ -43,11 +43,14 @@ router
     asyncWrap(listingController.updateListing)
   );
 
+router.route("/search").get(asyncWrap(listingController.searchListings));
+router.route("/filter").get(asyncWrap(listingController.filterListings));
+
 router
   .route("/:id")
   // render show route
   .get(asyncWrap(listingController.showListing))
   // delete listing data in db
   .delete(isLoggedIn, isOwner, asyncWrap(listingController.deleteListing));
-  
+
 module.exports = router;

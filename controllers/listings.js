@@ -10,8 +10,6 @@ module.exports.renderCreate = (req, res) => {
   res.render("listings/create.ejs");
 };
 
-// NO APIKEY
-
 module.exports.createListing = async (req, res) => {
   let url = req.file.path;
   let filename = req.file.filename;
@@ -94,8 +92,7 @@ module.exports.updateListing = async (req, res) => {
         coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
       },
     };
-    console.log(updateList);
-    
+
     // Save the updated listing
     await updateList.save();
     req.flash("success", "Listing Updated !!");
@@ -128,6 +125,107 @@ module.exports.showListing = async (req, res) => {
   res.render("listings/show.ejs", { list });
 };
 
+module.exports.searchListings = async (req, res) => {
+  try {
+    let query = {};
+    if (req.query.location) {
+      const firstWord = req.query.location.split(" ")[0];
+      query["location.name"] = new RegExp("^" + firstWord + "\\b", "i");
+
+      console.log(req.query.location);
+      const lists = await Listing.find(query).sort({ "location.name": 1 });
+      if (lists.length > 0) {
+        res.render("listings/index.ejs", { lists });
+      } else {
+        req.flash("error", "Location not found or Please recheck spellings");
+        res.redirect("/listings");
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports.filterListings = async (req, res) => {
+  try {
+    const category = iconToCategory[req.params.icon];
+    const lists = await Listing.find({ category }).sort({ "category": 1 });
+    if (lists.length > 0) {
+      res.render("listings/index.ejs", { lists });
+    } else {
+      req.flash('error', 'No listings found for this category');
+      res.redirect("/listings");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+
+
+// if (req.body.location === null || req.body.location.trim() === '') {
+//   req.flash('error', 'No location provided');
+//   return res.redirect('/listings');
+// }
+// let query = {};
+// if (req.body.location !== null) {
+//   if (req.body.location) {
+//     const firstWord = req.body.location.split(" ")[0];
+//     query["location.name"] = new RegExp("^" + firstWord + "\\b", "i");
+//   }
+
+// try {
+//   let query = {};
+//   if (req.body.location) {
+//     query["location.name"] = new RegExp("^" + req.body.location + "$", "i");
+//   }
+//   console.log(req.body.location);
+//   const lists = await Listing.find(query).sort({ "location.name": 1 });
+//   res.render("listings/index.ejs", { lists });
+// } catch (err) {
+//   console.error(err);
+//   res.status(500).send("Server Error");
+// }
+
+// try {
+//   let query = {};
+//   if (req.query.location) {
+//     query["location.name"] = new RegExp('^' + req.query.location + '$', 'i');
+//   }
+//   if (req.query.country) {
+//     query["country"] = new RegExp('^' + req.query.country + '$', 'i');
+//   }
+//   const lists = await Listing.find(query).sort({
+//     "location.name": 1,
+//     country: 1,
+//   });
+//   res.render("listings/index.ejs", { lists });
+// } catch (err) {
+//   console.error(err);
+//   res.status(500).send("Server Error");
+// }
+
+// console.log("searched", req.query);
+// try {
+//   let query = {};
+//   if (req.query.location) {
+//     query["location.name"] = req.query.location;
+//   }
+//   if (req.query.country) {
+//     query["country"] = req.query.country;
+//   }
+//   const lists = await Listing.find(query).sort({
+//     "location.name": 1,
+//     country: 1,
+//   });
+//   res.render("listings/index.ejs", { lists });
+// } catch (err) {
+//   console.error(err);
+//   res.status(500).send("Server Error");
+// }
+
 // module.exports.createListing = async (req, res) => {
 //   let url = req.file.path;
 //   let filename = req.file.filename;
@@ -138,7 +236,6 @@ module.exports.showListing = async (req, res) => {
 //   req.flash("success", "New Listing Created !!");
 //   res.redirect("/listings");
 // };
-
 
 // module.exports.updateListing = async (req, res) => {
 //   let { id } = req.params;
@@ -152,10 +249,6 @@ module.exports.showListing = async (req, res) => {
 //   req.flash("success", "Listing Updated !!");
 //   res.redirect(`/listings/${id}`);
 // };
-
-
-
-
 
 // module.exports.updateListing = async (req, res) => {
 //   let { id } = req.params;

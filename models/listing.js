@@ -26,7 +26,7 @@ const listingSchema = new mongoose.Schema({
     },
   },
   country: { type: String, required: true },
-  // category:{type:String, enum:["moutains, farms, rooms"]},
+  category:{type:String, enum:["moutain, farm, rooms, tranding, city, castle, pool, camping, artic, city, beach, boat, ski"]},
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

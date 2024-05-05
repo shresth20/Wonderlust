@@ -11,7 +11,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <div class="">
-                    <img src="<%=list.image.url%>" style="height: 19rem;" class="card-img-top rounded-3" alt="...">
+                    <img src="<%=list.image.url%>" style="height: 20rem;" class="card-img-top rounded-3" alt="...">
                 </div>
             </div>
             <div class="col">
@@ -23,24 +23,29 @@
                     <p>
                         <%= list.location.name %>, <%= list.country %>
                     </p>
-                    <div class="row">
-                        <p class="col-sm-5">Owned by- <i>@<%= list.owner.username %></i></p>
-                        <% if (currentUser && currentUser._id.equals(list.owner._id)) { %>
+                    <div class="">
+                        <p class="">Owned by- <i>@<%= list.owner.username %></i></p>
+                    </div>
+                    <% if (currentUser && currentUser._id.equals(list.owner._id)) { %>
+                        <div class="col-sm-7 btn-group mb-3">
+                            <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
+                                    class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
+                            <form action="/listings/<%= list.id %>?_method=DELETE" method="post"><button
+                                    type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                        <% }else{ %>
                             <div class="col-sm-7 btn-group mb-3">
-                                <form action="/listings/<%= list.id %>/update" method="get"><button type="submit"
-                                        class="btn me-2 btn-sm border-dark btn-outline-secondary">Update</button></form>
-                                <form action="/listings/<%= list.id %>?_method=DELETE" method="post"><button
-                                        type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
+                                <form action="/listings/<%= list.id %>/" method="get"><button type="submit"
+                                        class="btn btn-md btn-danger fw-bold ps-5 pe-5">Reserve</button></form>
                             </div>
                             <% } %>
-                    </div>
                 </div>
                 <div class="p-3 bg-body rounded shadow-sm">
                     <form id="form" novalidate class="needs-validation " action="/listings/<%= list.id %>/reviews"
                         method="post">
                         <div class="row">
-                            <div class="col-sm-3 ">Rating Star:</div>
+                            <div class="col-sm-3">Rating Star:</div>
                             <div class="col-sm-9">
                                 <fieldset class="starability-grow">
                                     <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0"
