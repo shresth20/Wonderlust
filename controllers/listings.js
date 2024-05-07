@@ -26,11 +26,14 @@ module.exports.createListing = async (req, res) => {
     geometry: { type: 'Point', coordinates: [ 78.47081, 17.3949 ] }
   };
 
-  // Store the location name and coordinates in the database
-  newList.location = {
-    name: address,
-    geometry: location.geometry
-  };
+    // Store the location name and coordinates in the database
+    newList.location = {
+      name: address,
+      geometry: {
+        type: "Point",
+        coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
+      },
+    };
 
   await newList.save();
   req.flash("success", "New Listing Created !!");
