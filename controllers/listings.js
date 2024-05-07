@@ -36,7 +36,7 @@ module.exports.createListing = async (req, res) => {
       name: address,
       geometry: {
         type: "Point",
-        coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
+        coordinates: [77.22445, 28.63576], //[parseFloat(location.lon), parseFloat(location.lat)],
       },
     };
 
