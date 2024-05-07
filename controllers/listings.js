@@ -20,37 +20,65 @@ module.exports.createListing = async (req, res) => {
   // Get the location address from the request
   let address = req.body.listing.location;
 
-  // Use the Nominatim Geocoding service to get the coordinates
-  let response = await axios.get(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      address
-    )}`
-  );
+  // Fake data for testing
+  let location = {
+    name: 'Hyderabad',
+    geometry: { type: 'Point', coordinates: [ 78.47081, 17.3949 ] }
+  };
 
-  // Check if the request was successful
-  if (response.data && response.data.length > 0) {
-    let location = response.data[0];
+  // Store the location name and coordinates in the database
+  newList.location = {
+    name: address,
+    geometry: location.geometry
+  };
 
-    // Store the location name and coordinates in the database
-    newList.location = {
-      name: address,
-      geometry: {
-        type: "Point",
-        coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
-      },
-    };
-
-    await newList.save();
-    req.flash("success", "New Listing Created !!");
-    res.redirect("/listings");
-  } else {
-    req.flash(
-      "error",
-      "No results found, Please recheck location spellings !!"
-    );
-    res.redirect(`/listings/create`);
-  }
+  await newList.save();
+  req.flash("success", "New Listing Created !!");
+  res.redirect("/listings");
 };
+
+
+// module.exports.createListing = async (req, res) => {
+//   let url = req.file.path;
+//   let filename = req.file.filename;
+//   let newList = new Listing(req.body.listing);
+//   newList.owner = req.user._id;
+//   newList.image = { url, filename };
+
+//   // Get the location address from the request
+//   let address = req.body.listing.location;
+
+//   // Use the Nominatim Geocoding service to get the coordinates
+//   let response = await axios.get(
+//     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+//       address
+//     )}`
+//   );
+
+//   // Check if the request was successful
+//   if (response.data && response.data.length > 0) {
+//     let location = response.data[0];
+
+//     // Store the location name and coordinates in the database
+//     newList.location = {
+//       name: address,
+//       geometry: {
+//         type: "Point",
+//         coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
+//       },
+//     };
+
+//     await newList.save();
+//     req.flash("success", "New Listing Created !!");
+//     res.redirect("/listings");
+//   } else {
+//     req.flash(
+//       "error",
+//       "No results found, Please recheck location spellings !!"
+//     );
+//     res.redirect(`/listings/create`);
+//   }
+// };
 
 module.exports.renderUpdate = async (req, res) => {
   let { id } = req.params;
@@ -61,38 +89,30 @@ module.exports.renderUpdate = async (req, res) => {
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
   let updateList = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-
-  // let updateList = await Listing.findById(id);
-
   if (typeof req.file !== "undefined") {
     let url = req.file.path;
     let filename = req.file.filename;
     updateList.image = { url, filename };
   }
-
   // Get the location address from the request
   let address = req.body.listing.location;
-
   // Use the Nominatim Geocoding service to get the coordinates
   let response = await axios.get(
     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       address
     )}`
   );
-
   // Check if the request was successful
   if (response.data && response.data.length > 0) {
     let location = response.data[0];
-
     // Update the location name and coordinates in the database
     updateList.location = {
       name: address,
       geometry: {
         type: "Point",
-        coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
+        coordinates: [77.22445, 28.63576], //parseFloat(location.lon), parseFloat(location.lat)
       },
     };
-
     // Save the updated listing
     await updateList.save();
     req.flash("success", "Listing Updated !!");
@@ -105,6 +125,8 @@ module.exports.updateListing = async (req, res) => {
     res.redirect(`/listings/${id}/update`);
   }
 };
+
+
 
 module.exports.deleteListing = async (req, res) => {
   let { id } = req.params;
@@ -226,29 +248,9 @@ module.exports.filterListings = async (req, res) => {
 //   res.status(500).send("Server Error");
 // }
 
-// module.exports.createListing = async (req, res) => {
-//   let url = req.file.path;
-//   let filename = req.file.filename;
-//   let newList = new Listing(req.body.listing);
-//   newList.owner = req.user._id;
-//   newList.image = { url, filename };
-//   await newList.save();
-//   req.flash("success", "New Listing Created !!");
-//   res.redirect("/listings");
-// };
 
-// module.exports.updateListing = async (req, res) => {
-//   let { id } = req.params;
-//   let updateList = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-//   if (typeof req.file !== "undefined") {
-//     let url = req.file.path;
-//     let filename = req.file.filename;
-//     updateList.image = { url, filename };
-//     await updateList.save();
-//   }
-//   req.flash("success", "Listing Updated !!");
-//   res.redirect(`/listings/${id}`);
-// };
+
+// NO
 
 // module.exports.updateListing = async (req, res) => {
 //   let { id } = req.params;
@@ -336,4 +338,30 @@ module.exports.filterListings = async (req, res) => {
 //   await newList.save();
 //   req.flash("success", "New Listing Created !!");
 //   res.redirect("/listings");
+// };
+
+
+
+// module.exports.createListing = async (req, res) => {
+//   let url = req.file.path;
+//   let filename = req.file.filename;
+//   let newList = new Listing(req.body.listing);
+//   newList.owner = req.user._id;
+//   newList.image = { url, filename };
+//   await newList.save();
+//   req.flash("success", "New Listing Created !!");
+//   res.redirect("/listings");
+// };
+
+// module.exports.updateListing = async (req, res) => {
+//   let { id } = req.params;
+//   let updateList = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+//   if (typeof req.file !== "undefined") {
+//     let url = req.file.path;
+//     let filename = req.file.filename;
+//     updateList.image = { url, filename };
+//     await updateList.save();
+//   }
+//   req.flash("success", "Listing Updated !!");
+//   res.redirect(`/listings/${id}`);
 // };
