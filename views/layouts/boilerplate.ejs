@@ -27,56 +27,66 @@
 
     <head>
         <!-- navbar -->
-        <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top border-bottom">
+        <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top border-bottom row">
             <div class="container-xl">
-                <a id="navbar-brand" class="navbar-brand fw-bold" href="/listings"><i
-                        class="fa-solid fa-person-walking-luggage"></i>Wonderlust</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
-                            <a type="button" class="nav-link" data-bs-container="body" tabindex="0"
-                                data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom"
-                                data-bs-content="Admin side view">
-                                Admin
-                            </a>
-                        </li> -->
-                    </ul>
-                    <div class="navbar-nav me-auto search">
-                        <form action="/listings/search" method="get" class="d-flex needs-validation" role="search" novalidate>
-                            <input type="text" class="form-control rounded-pill" type="search" placeholder="Search by Location"
-                                aria-describedby="button-addon2" name="location" required>
-                            <button id="search-btn" class="btn rounded-pill" type="submit" id="button-addon2"><i
-                                    class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
-                        </form>
-                    </div>
-                    <ul class="navbar-nav ms-auto  mb-lg-0">
-                        <li class="nav-item">
-                            <a id="createList" class="nav-link text-nowrap fw-bold " href="/listings/create">Wonderlust
-                                your home</a>
-                        </li>
-                        <% if (!currentUser) { %>
-                            <li class="nav-item">
-                                <a class="nav-link fw-bold" href="/signup">Signup</a>
-                            </li>
-                            <li class="nav-item"><a id="loginBtn" class="nav-link fw-bold" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">Login</a>
-                            </li>
-                            <% } else { %>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-bold" href="/logout">Logout</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-bold" href="">@<%= currentUser.username %></a>
-                                </li>
-                                <% } %>
 
-                    </ul>
+                <div class="col-4 navbar-nav navItem text-nowrap">
+                    <a id="navbar-brand" class="fw-bold" href="/listings">
+                        <i class="fa-solid fa-person-walking-luggage"></i>Wonderlust</a>
                 </div>
+
+                <div class="col-4 navbar-nav search navItem">
+                    <form action="/listings/search" method="get" class="d-flex needs-validation" role="search"
+                        novalidate>
+                        <input type="text" class="form-control rounded-pill" type="search"
+                            placeholder="Search by Location" aria-describedby="button-addon2" name="location" required>
+                        <button id="search-btn" class="btn rounded-pill" type="submit" id="button-addon2"><i
+                                class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
+                    </form>
+                </div>
+
+                <!-- side  -->
+                <div class="col-4  navItem ">
+                    <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
+                        aria-controls="offcanvas" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="offcanvas offcanvas-end text-bg-light custom-offcanvas-width " style="width:180px;"
+                        tabindex="-1" id="offcanvas" aria-labelledby="#offcanvasLabel">
+
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="#offcanvasLabel">Wonderlust</h5>
+                            <button type="button" class="btn-close btn-close-gray" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="offcanvas-body">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a id="createList" class="nav-link text-nowrap fw-bold "
+                                        href="/listings/create">Wonderlust your home</a>
+                                </li>
+                                <% if (!currentUser) { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link fw-bold" href="/signup">Signup</a>
+                                    </li>
+                                    <li class="nav-item"><a id="loginBtn" class="nav-link fw-bold" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop">Login</a>
+                                    </li>
+                                    <% } else { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link fw-bold" href="/logout">Logout</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link fw-bold" href="">@<%= currentUser.username %></a>
+                                        </li>
+                                        <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </nav>
 

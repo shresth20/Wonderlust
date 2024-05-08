@@ -18,14 +18,19 @@ main {
 }
 
 .navbar {
+    height: 5rem;
+}
+
+.navItem {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
 }
 
 #navbar-brand {
     color: #FC642D;
+    font-size: larger;
+    /* margin:0px 6rem 0px; */
 }
 
 #createList {
@@ -90,7 +95,7 @@ a {
 }
 
 .filters {
-    margin-right: 1.5rem;
+    margin: 0px 8px 0px;
     text-align: center;
     cursor: pointer;
     opacity: 0.8;
@@ -119,6 +124,7 @@ a {
     color: rgb(73, 72, 72);
     font-size: 13px;
     padding: 10px 0px 0px 0px;
+    margin-bottom: 1rem;
 
 }
 
@@ -131,4 +137,3 @@ a {
 #search-btn {
     background-color: #FF5A5F;
 }
-
