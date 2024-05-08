@@ -137,23 +137,27 @@ module.exports.updateListing = async (req, res) => {
   }
   // Get the location address from the request
   let address = req.body.listing.location;
-  // Use the Nominatim Geocoding service to get the coordinates
+
+  // Use the HERE Geocoding service to get the coordinates
   let response = await axios.get(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+    `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(
       address
-    )}`
+    )}&apiKey=fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E`
   );
+
   // Check if the request was successful
-  if (response.data && response.data.length > 0) {
-    let location = response.data[0];
+  if (response.data && response.data.items && response.data.items.length > 0) {
+    let location = response.data.items[0].position;
+
     // Update the location name and coordinates in the database
     updateList.location = {
       name: address,
       geometry: {
         type: "Point",
-        coordinates: [77.22445, 28.63576], //parseFloat(location.lon), parseFloat(location.lat)
+        coordinates: [location.lng, location.lat],
       },
     };
+
     // Save the updated listing
     await updateList.save();
     req.flash("success", "Listing Updated !!");
@@ -284,117 +288,3 @@ module.exports.filterListings = async (req, res) => {
 //   console.error(err);
 //   res.status(500).send("Server Error");
 // }
-
-// NO
-
-// module.exports.updateListing = async (req, res) => {
-//   let { id } = req.params;
-//   let updateList = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-
-//   if (typeof req.file !== "undefined") {
-//     let url = req.file.path;
-//     let filename = req.file.filename;
-//     updateList.image = { url, filename };
-//   }
-
-//   // Get the location address from the request
-//   let address = req.body.listing.location;
-
-//   // Use the Nominatim Geocoding service to get the coordinates
-//   let response = await axios.get(
-//     `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-//       address
-//     )}`
-//   );
-
-//   // Check if the request was successful
-//   if (response.data && response.data.length > 0) {
-//     let location = response.data[0];
-
-//     // Update the location name and coordinates in the database
-//     updateList.location = {
-//       name: address,
-//       geometry: {
-//         type: "Point",
-//         coordinates: [parseFloat(location.lon), parseFloat(location.lat)],
-//       },
-//     };
-
-//     // Print the updated location name and coordinates in the console
-//     console.log(updateList.location);
-//   } else {
-//     req.flash("error", "No results found, Please recheck location spellings !!");
-//     res.redirect(`/listings/${id}/update`)
-//   }
-
-//   await updateList.save();
-//   req.flash("success", "Listing Updated !!");
-//   res.redirect(`/listings/${id}`);
-// };
-
-// APIKEY
-
-// module.exports.createListing = async (req, res) => {
-//   let url = req.file.path;
-//   let filename = req.file.filename;
-//   let newList = new Listing(req.body.listing);
-//   newList.owner = req.user._id;
-//   newList.image = { url, filename };
-
-//   // Get the location address from the request
-//   let address = req.body.listing.location;
-
-//   // Use the HERE Geocoding and Search API to get the coordinates
-//   let response = await axios.get(
-//     `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(
-//       address
-//     )}&apiKey=fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E`
-//   );
-
-//   // Check if the request was successful
-//   if (response.data.items && response.data.items.length > 0) {
-//     let location = response.data.items[0].position;
-
-//     // Store the location name and coordinates in the database
-//     newList.location = {
-//       name: address,
-//       geometry: {
-//         type: "Point",
-//         coordinates: [location.lng, location.lat],
-//       },
-//     };
-
-//     // Print the location name and coordinates in the console
-//     console.log(newList.location);
-//   } else {
-//     console.log("Error: No results found");
-//   }
-
-//   await newList.save();
-//   req.flash("success", "New Listing Created !!");
-//   res.redirect("/listings");
-// };
-
-// module.exports.createListing = async (req, res) => {
-//   let url = req.file.path;
-//   let filename = req.file.filename;
-//   let newList = new Listing(req.body.listing);
-//   newList.owner = req.user._id;
-//   newList.image = { url, filename };
-//   await newList.save();
-//   req.flash("success", "New Listing Created !!");
-//   res.redirect("/listings");
-// };
-
-// module.exports.updateListing = async (req, res) => {
-//   let { id } = req.params;
-//   let updateList = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-//   if (typeof req.file !== "undefined") {
-//     let url = req.file.path;
-//     let filename = req.file.filename;
-//     updateList.image = { url, filename };
-//     await updateList.save();
-//   }
-//   req.flash("success", "Listing Updated !!");
-//   res.redirect(`/listings/${id}`);
-// };
