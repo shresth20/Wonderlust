@@ -80,7 +80,6 @@ module.exports.renderCreate = (req, res) => {
 //   }
 // };
 
-
 module.exports.createListing = async (req, res) => {
   let url = req.file.path;
   let filename = req.file.filename;
@@ -116,8 +115,12 @@ module.exports.createListing = async (req, res) => {
   } else {
     console.log("Error: No results found");
   }
+  await newList.save();
+  req.flash("success", "New Listing Created !!");
+  res.redirect("/listings");
+};
 
-
+// update
 module.exports.renderUpdate = async (req, res) => {
   let { id } = req.params;
   let list = await Listing.findById(id);
