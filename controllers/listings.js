@@ -80,6 +80,7 @@ module.exports.renderCreate = (req, res) => {
 //   }
 // };
 
+
 module.exports.createListing = async (req, res) => {
   let url = req.file.path;
   let filename = req.file.filename;
@@ -90,49 +91,32 @@ module.exports.createListing = async (req, res) => {
   // Get the location address from the request
   let address = req.body.listing.location;
 
-  // Use the Nominatim Geocoding service to get the coordinates
+  // Use the HERE Geocoding and Search API to get the coordinates
   let response = await axios.get(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+    `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(
       address
-    )}`
+    )}&apiKey=fyqio2X0BmV56EV3PVY9KEzHjFowKZIuCrsFYXlX99E`
   );
 
   // Check if the request was successful
-  if (response.data && response.data.length > 0) {
-    let location = response.data[0];
+  if (response.data.items && response.data.items.length > 0) {
+    let location = response.data.items[0].position;
 
-    // Save the coordinates in a variable
-    let coordinates = [parseFloat(location.lon), parseFloat(location.lat)];
+    // Store the location name and coordinates in the database
+    newList.location = {
+      name: address,
+      geometry: {
+        type: "Point",
+        coordinates: [location.lng, location.lat],
+      },
+    };
 
-    // Check if the coordinates are valid
-    if (coordinates[0] && coordinates[1]) {
-      // Store the location name and coordinates in the database
-      newList.location = {
-        name: address,
-        geometry: {
-          type: "Point",
-          coordinates: coordinates,
-        },
-      };
-
-      await newList.save();
-      req.flash("success", "New Listing Created !!");
-      res.redirect("/listings");
-    } else {
-      req.flash(
-        "error",
-        "Invalid coordinates received, Please recheck location spellings !!"
-      );
-      res.redirect(`/listings/create`);
-    }
+    // Print the location name and coordinates in the console
+    console.log(newList.location);
   } else {
-    req.flash(
-      "error",
-      "No results found, Please recheck location spellings !!"
-    );
-    res.redirect(`/listings/create`);
+    console.log("Error: No results found");
   }
-};
+
 
 module.exports.renderUpdate = async (req, res) => {
   let { id } = req.params;
