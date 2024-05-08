@@ -9,35 +9,35 @@ module.exports.renderIndex = async (req, res) => {
 module.exports.renderCreate = (req, res) => {
   res.render("listings/create.ejs");
 };
+// TEST COORDIN..
+// module.exports.createListing = async (req, res) => {
+//   let url = req.file.path;
+//   let filename = req.file.filename;
+//   let newList = new Listing(req.body.listing);
+//   newList.owner = req.user._id;
+//   newList.image = { url, filename };
 
-module.exports.createListing = async (req, res) => {
-  let url = req.file.path;
-  let filename = req.file.filename;
-  let newList = new Listing(req.body.listing);
-  newList.owner = req.user._id;
-  newList.image = { url, filename };
+//   // Get the location address from the request
+//   let address = req.body.listing.location;
 
-  // Get the location address from the request
-  let address = req.body.listing.location;
+//   // Fake data for testing
+//   let location = {
+//     name: 'Hyderabad',
+//     geometry: { type: 'Point', coordinates: [ 78.47081, 17.3949 ] }
+//   };
 
-  // Fake data for testing
-  let location = {
-    name: 'Hyderabad',
-    geometry: { type: 'Point', coordinates: [ 78.47081, 17.3949 ] }
-  };
+//   // Store the location name and coordinates in the database
+//   newList.location = {
+//     name: address,
+//     geometry: location.geometry
+//   };
 
-  // Store the location name and coordinates in the database
-  newList.location = {
-    name: address,
-    geometry: location.geometry
-  };
+//   await newList.save();
+//   req.flash("success", "New Listing Created !!");
+//   res.redirect("/listings");
+// };
 
-  await newList.save();
-  req.flash("success", "New Listing Created !!");
-  res.redirect("/listings");
-};
-
-
+// ERR COOrd...
 // module.exports.createListing = async (req, res) => {
 //   let url = req.file.path;
 //   let filename = req.file.filename;
@@ -79,6 +79,60 @@ module.exports.createListing = async (req, res) => {
 //     res.redirect(`/listings/create`);
 //   }
 // };
+
+module.exports.createListing = async (req, res) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
+  let newList = new Listing(req.body.listing);
+  newList.owner = req.user._id;
+  newList.image = { url, filename };
+
+  // Get the location address from the request
+  let address = req.body.listing.location;
+
+  // Use the Nominatim Geocoding service to get the coordinates
+  let response = await axios.get(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+      address
+    )}`
+  );
+
+  // Check if the request was successful
+  if (response.data && response.data.length > 0) {
+    let location = response.data[0];
+
+    // Save the coordinates in a variable
+    let coordinates = [parseFloat(location.lon), parseFloat(location.lat)];
+
+    // Check if the coordinates are valid
+    if (coordinates[0] && coordinates[1]) {
+      // Store the location name and coordinates in the database
+      newList.location = {
+        name: address,
+        geometry: {
+          type: "Point",
+          coordinates: coordinates,
+        },
+      };
+
+      await newList.save();
+      req.flash("success", "New Listing Created !!");
+      res.redirect("/listings");
+    } else {
+      req.flash(
+        "error",
+        "Invalid coordinates received, Please recheck location spellings !!"
+      );
+      res.redirect(`/listings/create`);
+    }
+  } else {
+    req.flash(
+      "error",
+      "No results found, Please recheck location spellings !!"
+    );
+    res.redirect(`/listings/create`);
+  }
+};
 
 module.exports.renderUpdate = async (req, res) => {
   let { id } = req.params;
@@ -126,8 +180,6 @@ module.exports.updateListing = async (req, res) => {
   }
 };
 
-
-
 module.exports.deleteListing = async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndDelete(id);
@@ -172,11 +224,11 @@ module.exports.searchListings = async (req, res) => {
 module.exports.filterListings = async (req, res) => {
   try {
     const category = iconToCategory[req.params.icon];
-    const lists = await Listing.find({ category }).sort({ "category": 1 });
+    const lists = await Listing.find({ category }).sort({ category: 1 });
     if (lists.length > 0) {
       res.render("listings/index.ejs", { lists });
     } else {
-      req.flash('error', 'No listings found for this category');
+      req.flash("error", "No listings found for this category");
       res.redirect("/listings");
     }
   } catch (err) {
@@ -184,8 +236,6 @@ module.exports.filterListings = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-
-
 
 // if (req.body.location === null || req.body.location.trim() === '') {
 //   req.flash('error', 'No location provided');
@@ -247,8 +297,6 @@ module.exports.filterListings = async (req, res) => {
 //   console.error(err);
 //   res.status(500).send("Server Error");
 // }
-
-
 
 // NO
 
@@ -339,8 +387,6 @@ module.exports.filterListings = async (req, res) => {
 //   req.flash("success", "New Listing Created !!");
 //   res.redirect("/listings");
 // };
-
-
 
 // module.exports.createListing = async (req, res) => {
 //   let url = req.file.path;
