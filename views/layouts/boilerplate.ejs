@@ -27,12 +27,12 @@
 
     <head>
         <!-- navbar -->
-        <nav class="navbar navbar-expand-sm bg-body-tertiary fixed-top border-bottom row">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top border-bottom row">
             <div class="container-xl">
 
                 <div class="col-4 navbar-nav navItem text-nowrap">
                     <a id="navbar-brand" class="fw-bold" href="/listings">
-                        <i class="fa-solid fa-person-walking-luggage"></i>Wonderlust</a>
+                        <i class="fa-solid fa-person-walking-luggage"></i><span class="">Wonderlust</span></a>
                 </div>
 
                 <div class="col-4 navbar-nav search navItem">
@@ -46,17 +46,17 @@
                 </div>
 
                 <!-- side  -->
-                <div class="col-4  navItem ">
-                    <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
+                <div class="col-sm-3 col-lg-4  navItem ">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
                         aria-controls="offcanvas" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <span class=""><i class="fa-solid fa-bars fa-lg"></i></span>
                     </button>
 
                     <div class="offcanvas offcanvas-end text-bg-light custom-offcanvas-width " style="width:180px;"
                         tabindex="-1" id="offcanvas" aria-labelledby="#offcanvasLabel">
 
                         <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="#offcanvasLabel">Wonderlust</h5>
+                            <span class="offcanvas-title fw-bold" id="#offcanvasLabel"><i class="fa-solid fa-person-walking-luggage"></i>Wonderlust</span>
                             <button type="button" class="btn-close btn-close-gray" data-bs-dismiss="offcanvas"
                                 aria-label="Close"></button>
                         </div>

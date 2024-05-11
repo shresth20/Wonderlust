@@ -30,7 +30,6 @@ main {
 #navbar-brand {
     color: #FC642D;
     font-size: larger;
-    /* margin:0px 6rem 0px; */
 }
 
 #createList {
@@ -136,4 +135,14 @@ a {
 
 #search-btn {
     background-color: #FF5A5F;
+}
+
+.navbar-toggler{
+    border: none;
+}
+
+@media only screen and (max-width: 450px) {
+    .element-to-hide {
+        display: none;
+    }
 }

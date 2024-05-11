@@ -127,7 +127,6 @@ module.exports.searchListings = async (req, res) => {
       const firstWord = req.query.location.split(" ")[0];
       query["location.name"] = new RegExp("^" + firstWord + "\\b", "i");
 
-      console.log(req.query.location);
       const lists = await Listing.find(query).sort({ "location.name": 1 });
       if (lists.length > 0) {
         res.render("listings/index.ejs", { lists });
