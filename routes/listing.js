@@ -26,10 +26,6 @@ router
   .post(upload.single("listing[image]"), (req, res) => {
     res.send(req.file);
   });
-// .post(upload.single("listing[image]"), (req, res) => {
-//   console.log(req.file); // to see what is returned to you
-//   res.send(req.file);
-// });
 
 router
   .route("/:id/update")

@@ -40,10 +40,10 @@ module.exports.createListing = async (req, res) => {
       },
     };
 
-    // Print the location name and coordinates in the console
-    console.log(newList.location);
+    // check the location name and coordinates in the console
+    // console.log(newList.location);
   } else {
-    console.log("Error: No results found");
+    req.flash("error", "Location: No results found");
   }
   await newList.save();
   req.flash("success", "New Listing Created !!");
