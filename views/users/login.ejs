@@ -1,9 +1,9 @@
 <% layout('/layouts/boilerplate') -%>
 
     <body class="py-4 bg-body-tertiary">
-        <main id="logForm" class="form-signin m-auto">
+        <main id="logForm" class="m-auto">
             <form action="/login" method="post" class="needs-validation" novalidate>
-                <h3 class="mb-3 fw-normal text-nowrap">Please login your account</h3>
+                <h3 class="mb-3 text-nowrap">Please login your account</h3>
                 <div class="form-floating">
                     <input name="username" type="text" class="form-control" id="Username" placeholder="Username"
                         required>
@@ -16,7 +16,7 @@
                 </div>
                 <br>
                 <div class="">
-                    <button class="btn w-100 btn-primary py-2" type="submit">Login</button>
+                    <button class="btn btn-sm w-100 btn-primary py-2 fw-bold" type="submit">Login</button>
                 </div>
             </form>
         </main>

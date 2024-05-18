@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="">
-    <title>Wonderlust</title>
+    <link rel="icon" type="image/svg+xml" href="/wonderlust.svg" />
+    <title id="navbar-brand">Wonderlust</title>
 
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,7 +56,8 @@
                         tabindex="-1" id="offcanvas" aria-labelledby="#offcanvasLabel">
 
                         <div class="offcanvas-header">
-                            <span class="offcanvas-title fw-bold" id="#offcanvasLabel"><i class="fa-solid fa-person-walking-luggage"></i>Wonderlust</span>
+                            <span class="offcanvas-title fw-bold" id="#offcanvasLabel"><i
+                                    class="fa-solid fa-person-walking-luggage"></i>Wonderlust</span>
                             <button type="button" class="btn-close btn-close-gray" data-bs-dismiss="offcanvas"
                                 aria-label="Close"></button>
                         </div>
@@ -96,31 +97,34 @@
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Login Here</h1>
+                    <!-- <div class="modal-header">
+                        <h3 class="modal-title" id="staticBackdropLabel">Login Here</h3>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/login" method='post'>
-                            <div class="mb-3">
-                                <label for="Username" class="form-label">Username</label>
-                                <input name="username" type="text" class="form-control" id="Username"
-                                    placeholder="Enter Your Username" autocomplete="">
+                    </div> -->
+                    <div id="logForm" class="modal-body">
 
+                        <form action="/login" method="post" class="needs-validation" novalidate>
+                            <h3 class="mb-3 text-nowrap" style="width: 450px;">Please login your account</h3>
+                            <div class="form-floating">
+                                <input name="username" type="text" class="form-control" id="Username"
+                                    placeholder="Username" required>
+                                <label for="Username">Username</label>
                             </div>
-                            <div class="mb-3">
-                                <label for="InputPassword1" class="form-label">Password</label>
-                                <input name="password" type="password" class="form-control" id="InputPassword1"
-                                    placeholder="Enter Password" name="loginPassword" autocomplete="current-password">
+                            <div class="form-floating">
+                                <input name="password" type="password" class="form-control" id="floatingPassword"
+                                    placeholder="Password" required>
+                                <label for="floatingPassword">Password</label>
                             </div>
-                            <div>
-                                <button type="submit" type="button" class="btn btn-sm btn-primary rounded-2 "
-                                    data-bs-dismiss="modal">Login</button>
-                                <a href="/signup" class="rounded-2 position-absolute end-0 px-3 fw-bold">Create
-                                    an
-                                    account</a>
+                            <br>
+                            <div class="">
+                                <button class="btn w-100 btn-primary py-2 btn-sm fw-bold" type="submit">Login</button>
                             </div>
                         </form>
+                        <div class="mt-2">
+                            <a href="/signup" class="">Create an
+                                account</a>
+                        </div>
+                        <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
             </div>
